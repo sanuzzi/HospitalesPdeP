@@ -1,0 +1,32 @@
+import example.*
+
+describe "tests sobre el hospital y su fama" {
+
+	test "si no tiene doctores, su calidad es 0" {
+		assert.equals(hospital.calidadTotal(), 0)
+	}
+	
+	test "si tiene 3 doctores de 10 puntos c/u, su calidad es 30" {
+		hospital.doctores([lucas, pepe, lucho])
+		
+		lucas.calidadDeAtencion(10)
+		pepe.calidadDeAtencion(10)
+		lucho.calidadDeAtencion(10)
+		
+		assert.equals(hospital.calidadTotal(), 30)
+	}
+	
+	test "si tiene 0 puntos de fama, NO es famoso" {
+		assert.notThat( hospital.sosFamoso() )
+	}
+	
+	test "si tiene más de 1000 puntos de fama, es famoso" {
+		lucas.calidadDeAtencion(1000000)
+		hospital.agregaDoctor(lucas)
+		
+		sandra.chisme(800)
+		hospital.agregaPaciente(sandra)
+		
+		assert.that( hospital.sosFamoso() )
+	}
+}

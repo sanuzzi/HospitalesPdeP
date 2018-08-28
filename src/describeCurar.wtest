@@ -1,0 +1,61 @@
+import example.*
+
+describe "tests sobre curar a alguien" {
+	const enferma
+	
+	fixture {
+		enferma = sandra
+		enferma.enfermate()
+	}
+
+	test "si sandra se cura, tiene 100 puntos de salud" {
+		enferma.curate()
+		
+		assert.that(enferma.tenesBuenaSalud())
+	}
+	
+	test "cuando un doctor cura a alguien, ésta queda con buena salud"{
+		lucas.cura(enferma)
+		
+		assert.that(enferma.tenesBuenaSalud())
+	}
+	
+	test "si un doctor cura a alguien, aumenta su calidad"{
+		const calidadInicial = lucas.calidadDeAtencion()
+		
+		lucas.cura(enferma)
+		
+		const calidadFinal = lucas.calidadDeAtencion()
+		
+		assert.that(calidadFinal > calidadInicial)
+	}
+	
+	test "si hay un doctor de calidad 10 y otros de 100, el mínimo es el de 10"{
+		const elPeorDeTodos = lucho
+		elPeorDeTodos.calidadDeAtencion(10)
+		lucas.calidadDeAtencion(100)
+		pepe.calidadDeAtencion(100)
+		
+		hospital.doctores([pepe, elPeorDeTodos, lucas])
+		
+		assert.equals(hospital.peorDoctor(), elPeorDeTodos)
+	}
+	
+	test "si el hospital cura a alguien, éste queda con buena salud"{
+		hospital.doctores([pepe, lucas, lucho])
+		
+		hospital.cura(enferma) 
+		
+		assert.that(enferma.tenesBuenaSalud())
+	}
+	
+	test "si el hospital cura a alguien, éste queda entre los pacientes atendidos"{
+		hospital.doctores([pepe, lucas, lucho])
+		
+		hospital.cura(enferma) 
+		
+		assert.that(hospital.atendiste(enferma))
+	}
+}
+
+
