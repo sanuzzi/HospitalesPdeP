@@ -1,10 +1,12 @@
-import example.*
+import hospital.*
+import persona.*
+import doctor.*
 
 describe "tests sobre curar a alguien" {
 	const enferma
 	
 	fixture {
-		enferma = sandra
+		enferma = new Persona()
 		enferma.enfermate()
 	}
 

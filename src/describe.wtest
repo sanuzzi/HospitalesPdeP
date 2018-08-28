@@ -1,4 +1,6 @@
-import example.*
+import hospital.*
+import persona.*
+import doctor.*
 
 describe "tests sobre el hospital y su fama" {
 
@@ -26,7 +28,8 @@ describe "tests sobre el hospital y su fama" {
 		unDoctorCapo.calidadDeAtencion(1000000)
 		hospital.agregaDoctor(unDoctorCapo)
 		
-		sandra.chisme(800)
+		const sandra = new Persona(chisme = 800, salud = 10)
+		
 		hospital.agregaPaciente(sandra)
 		
 		assert.that( hospital.sosFamoso() )
