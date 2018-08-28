@@ -7,11 +7,12 @@ describe "tests sobre el hospital y su fama" {
 	}
 	
 	test "si tiene 3 doctores de 10 puntos c/u, su calidad es 30" {
-		hospital.doctores([lucas, pepe, lucho])
 		
-		lucas.calidadDeAtencion(10)
-		pepe.calidadDeAtencion(10)
-		lucho.calidadDeAtencion(10)
+		hospital.doctores([
+			new Doctor(calidadDeAtencion = 10), 
+			new Doctor(calidadDeAtencion = 10), 
+			new Doctor(calidadDeAtencion = 10)
+		])
 		
 		assert.equals(hospital.calidadTotal(), 30)
 	}
@@ -21,8 +22,9 @@ describe "tests sobre el hospital y su fama" {
 	}
 	
 	test "si tiene más de 1000 puntos de fama, es famoso" {
-		lucas.calidadDeAtencion(1000000)
-		hospital.agregaDoctor(lucas)
+		const unDoctorCapo = new Doctor()
+		unDoctorCapo.calidadDeAtencion(1000000)
+		hospital.agregaDoctor(unDoctorCapo)
 		
 		sandra.chisme(800)
 		hospital.agregaPaciente(sandra)

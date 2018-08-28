@@ -15,12 +15,14 @@ describe "tests sobre curar a alguien" {
 	}
 	
 	test "cuando un doctor cura a alguien, ésta queda con buena salud"{
-		lucas.cura(enferma)
+		new Doctor().cura(enferma)
 		
 		assert.that(enferma.tenesBuenaSalud())
 	}
 	
 	test "si un doctor cura a alguien, aumenta su calidad"{
+		const lucas = new Doctor()
+		
 		const calidadInicial = lucas.calidadDeAtencion()
 		
 		lucas.cura(enferma)
@@ -31,10 +33,9 @@ describe "tests sobre curar a alguien" {
 	}
 	
 	test "si hay un doctor de calidad 10 y otros de 100, el mínimo es el de 10"{
-		const elPeorDeTodos = lucho
-		elPeorDeTodos.calidadDeAtencion(10)
-		lucas.calidadDeAtencion(100)
-		pepe.calidadDeAtencion(100)
+		const elPeorDeTodos = new Doctor(calidadDeAtencion = 10)
+		const lucas = new Doctor(calidadDeAtencion = 100)
+		const pepe = new Doctor(calidadDeAtencion = 100)
 		
 		hospital.doctores([pepe, elPeorDeTodos, lucas])
 		
@@ -42,7 +43,7 @@ describe "tests sobre curar a alguien" {
 	}
 	
 	test "si el hospital cura a alguien, éste queda con buena salud"{
-		hospital.doctores([pepe, lucas, lucho])
+		hospital.doctores([new Doctor(), new Doctor(), new Doctor()])
 		
 		hospital.cura(enferma) 
 		
@@ -50,7 +51,7 @@ describe "tests sobre curar a alguien" {
 	}
 	
 	test "si el hospital cura a alguien, éste queda entre los pacientes atendidos"{
-		hospital.doctores([pepe, lucas, lucho])
+		hospital.doctores([new Doctor(), new Doctor(), new Doctor()])
 		
 		hospital.cura(enferma) 
 		
