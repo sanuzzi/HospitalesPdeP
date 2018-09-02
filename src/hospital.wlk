@@ -1,50 +1,28 @@
-/** First Wollok example */
-object hospital {
-	const doctores = []
-	const pacientes = []
-	
-	method slogan() = "Haciendo todo para que vuelvas"
-	
-	method pacientes() = pacientes
-	
-	method pacientes(nuevosPacientes){
-		pacientes.clear()
-		pacientes.addAll(nuevosPacientes)
+class Hospital {
+
+	const property doctores = []
+	const property pacientesAtendidos = []
+	var property slogan = "Haciendo todo para que vuelvas"
+
+	method calidad() = self.doctores().sum({ doctor => doctor.calidad() })
+
+	method fama() = self.chismeDePacientes() * self.calidad()
+
+	method chismeDePacientes() = self.pacientesAtendidos().sum({ paciente => paciente.chisme() })
+
+	method dasConfianza() = self.calidad() >= 100 && self.fama() >= 1000
+
+	method agregaPacienteAtendido(unPaciente) {
+		self.pacientesAtendidos().add(unPaciente)
 	}
-	
-	method agregaPaciente(unPaciente){
-		pacientes.add(unPaciente)
-	}
-	
-	method doctores() = doctores
-	
-	method doctores(nuevosDoctores){
-		doctores.clear()
-		doctores.addAll(nuevosDoctores)
-	}
-	
-	method agregaDoctor(unDoctor){
-		doctores.add(unDoctor)
-	}
-	
-	method cualEsTuFama() = self.chismeTotal() * self.calidadTotal()
-		
-	method chismeTotal() = 
-		self.pacientes().sum({paciente => paciente.chisme()})
-	
-	method calidadTotal() = 
-		self.doctores().sum({doctor => doctor.calidadDeAtencion()})
-	
-	method sosFamoso() = self.cualEsTuFama() > 1000
-	
-	method peorDoctor() =
-		self.doctores().min({doctor => doctor.calidadDeAtencion()})
-	
-	method cura(unPaciente){
+
+	method cura(unPaciente) {
 		self.peorDoctor().cura(unPaciente)
-		self.agregaPaciente(unPaciente)
+		self.agregaPacienteAtendido(unPaciente)
 	}
-	
-	method atendiste(unPaciente) = 
-		self.pacientes().contains(unPaciente)
+
+	method peorDoctor() = self.doctores().min({ doctor => doctor.calidad() })
+
+	method atendiste(unPaciente) = self.pacientesAtendidos().contains(unPaciente)
+
 }

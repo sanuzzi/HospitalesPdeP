@@ -1,0 +1,31 @@
+import hospital.*
+import paciente.*
+import doctor.*
+
+describe "Confianza y fama del hospital" {
+
+	const hospitalSinDoctores
+
+	fixture {
+		hospitalSinDoctores = new Hospital()
+	}
+
+	test "si el hospital no tiene doctores, da desconfianza" {
+		assert.notThat(hospitalSinDoctores.dasConfianza())
+	}
+
+	test "si el hospital no tiene doctores, la calidad es 0" {
+		assert.equals(hospitalSinDoctores.calidad(), 0)
+	}
+
+	test "Si el hospital tiene buena calidad y buena fama, da confianza" {
+		const doctorReCapo = new Doctor(calidad = 10000)
+		const personaChismosa = new Paciente(chisme = 10000)
+		const hospitalQueDaConfianza = new Hospital(
+			doctores = [ doctorReCapo ], pacientesAtendidos = [ personaChismosa ]
+		)
+		assert.that(hospitalQueDaConfianza.dasConfianza())
+	}
+
+}
+

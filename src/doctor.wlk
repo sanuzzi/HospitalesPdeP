@@ -1,20 +1,15 @@
 class Doctor {
-	var calidadDeAtencion = 0
+	var property calidad = 0
 	
-	method calidadDeAtencion() = calidadDeAtencion
-	
-	method calidadDeAtencion(nuevaCalidad){
-		calidadDeAtencion = nuevaCalidad
+	method aumentaCalidad(unaCalidad) {
+		self.calidad(self.calidad() + unaCalidad)
 	}
-	
-	method cura(unPaciente){
-		const saludInicial = unPaciente.salud()
+
+	method cura(unPaciente) {
+		const saludAnterior = unPaciente.salud()
 		unPaciente.curate()
-		const saludFinal = unPaciente.salud()
-		self.aumentaCalidadDeAtencion(saludFinal - saludInicial)
+		const saludNueva = unPaciente.salud()
+		self.aumentaCalidad(saludNueva - saludAnterior)
 	}
-	method aumentaCalidadDeAtencion(puntosNuevos){
-		self.calidadDeAtencion(self.calidadDeAtencion() + puntosNuevos)
-	}
-	
+
 }

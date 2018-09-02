@@ -1,0 +1,52 @@
+import hospital.*
+import paciente.*
+import doctor.*
+
+describe "Curar a alguien" {
+
+	const alguienInicialmenteEnfermo
+	const unDoctorCualquiera
+	const hospitalConDoctores
+
+	fixture {
+		alguienInicialmenteEnfermo = new Paciente()
+		alguienInicialmenteEnfermo.enfermate()
+		unDoctorCualquiera = new Doctor()
+		hospitalConDoctores = new Hospital(doctores = [ unDoctorCualquiera, unDoctorCualquiera ])
+	}
+
+	test "La persona enferma, no tiene buena salud" {
+		assert.notThat(alguienInicialmenteEnfermo.tenesBuenaSalud())
+	}
+
+	test "si un doctor cura a un enfermo, pasa a tener buena salud" {
+		unDoctorCualquiera.cura(alguienInicialmenteEnfermo)
+		assert.that(alguienInicialmenteEnfermo.tenesBuenaSalud())
+	}
+
+	test "si un doctor cura a un enfermo, la calidad del doctor aumenta" {
+		const calidadInicial = unDoctorCualquiera.calidad()
+		unDoctorCualquiera.cura(alguienInicialmenteEnfermo)
+		const calidadFinal = unDoctorCualquiera.calidad()
+		assert.that(calidadFinal > calidadInicial)
+	}
+
+	test "Si hay un doctor de 10 puntos y otro de 1000, el peor es el de 10" {
+		const doctorReCapo = new Doctor(calidad = 10000)
+		const doctorRecienRecibido = new Doctor(calidad = 10)
+		const unHospital = new Hospital(doctores = [ doctorReCapo, doctorRecienRecibido ])
+		assert.equals(unHospital.peorDoctor(), doctorRecienRecibido)
+	}
+
+	test "si el hospital cura a un enfermo, pasa a tener buena salud" {
+		hospitalConDoctores.cura(alguienInicialmenteEnfermo)
+		assert.that(alguienInicialmenteEnfermo.tenesBuenaSalud())
+	}
+
+	test "si el hospital cura a un enfermo, se agrega entre los pacientes atendidos" {
+		hospitalConDoctores.cura(alguienInicialmenteEnfermo)
+		assert.that(hospitalConDoctores.atendiste(alguienInicialmenteEnfermo))
+	}
+
+}
+
