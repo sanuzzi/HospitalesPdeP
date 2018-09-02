@@ -1,6 +1,16 @@
 class Paciente {
-	var property chisme = 500
-	var property salud = 250 
+	var chisme = 500
+	var salud = 250 
+	
+	method chisme() = chisme
+	method chisme(nuevoChisme){
+		chisme = nuevoChisme
+	}
+	
+	method salud() = salud
+	method salud(nuevaSalud){
+		salud = nuevaSalud
+	}
 	
 	method enfermate(){
 		self.salud(10)
