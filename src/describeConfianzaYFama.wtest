@@ -1,6 +1,6 @@
 import hospital.*
-import paciente.*
-import doctor.*
+import persona.*
+import conocimientoDeMedico.*
 
 describe "Confianza y fama del hospital" {
 
@@ -19,10 +19,12 @@ describe "Confianza y fama del hospital" {
 	}
 
 	test "Si el hospital tiene buena calidad y buena fama, da confianza" {
-		const doctorReCapo = new Doctor(calidad = 10000)
-		const personaChismosa = new Paciente(chisme = 10000)
+		const doctorReCapo = new Persona(
+			conocimientoDeMedicina = new ConocimientoDeMedico(calidad = 10000)
+		)
+		const personaChismosa = new Persona(chisme = 10000)
 		const hospitalQueDaConfianza = new Hospital(
-			doctores = [ doctorReCapo ], pacientesAtendidos = [ personaChismosa ]
+			curadores = [ doctorReCapo ], pacientesAtendidos = [ personaChismosa ]
 		)
 		assert.that(hospitalQueDaConfianza.dasConfianza())
 	}

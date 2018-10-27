@@ -1,6 +1,6 @@
 import hospital.*
-import paciente.*
-import doctor.*
+import persona.*
+import conocimientoDeMedico.*
 
 describe "Curar a alguien" {
 
@@ -9,10 +9,14 @@ describe "Curar a alguien" {
 	const hospitalConDoctores
 
 	fixture {
-		alguienInicialmenteEnfermo = new Paciente()
+		alguienInicialmenteEnfermo = new Persona()
 		alguienInicialmenteEnfermo.enfermate()
-		unDoctorCualquiera = new Doctor()
-		hospitalConDoctores = new Hospital(doctores = [ unDoctorCualquiera, unDoctorCualquiera ])
+		unDoctorCualquiera = new Persona(
+			conocimientoDeMedicina = new ConocimientoDeMedico()
+		)
+		hospitalConDoctores = new Hospital(
+			curadores = [ unDoctorCualquiera, unDoctorCualquiera ]
+		)
 	}
 
 	test "La persona enferma, no tiene buena salud" {
@@ -32,10 +36,16 @@ describe "Curar a alguien" {
 	}
 
 	test "Si hay un doctor de 10 puntos y otro de 1000, el peor es el de 10" {
-		const doctorReCapo = new Doctor(calidad = 10000)
-		const doctorRecienRecibido = new Doctor(calidad = 10)
-		const unHospital = new Hospital(doctores = [ doctorReCapo, doctorRecienRecibido ])
-		assert.equals(unHospital.peorDoctor(), doctorRecienRecibido)
+		const doctorReCapo = new Persona(
+			conocimientoDeMedicina = new ConocimientoDeMedico(calidad = 10000)
+		)
+		const doctorRecienRecibido = new Persona(
+			conocimientoDeMedicina = new ConocimientoDeMedico(calidad = 10)
+		)
+		const unHospital = new Hospital(
+			curadores = [ doctorReCapo, doctorRecienRecibido ]
+		)
+		assert.equals(unHospital.peorCurador(), doctorRecienRecibido)
 	}
 
 	test "si el hospital cura a un enfermo, pasa a tener buena salud" {
@@ -46,6 +56,34 @@ describe "Curar a alguien" {
 	test "si el hospital cura a un enfermo, se agrega entre los pacientes atendidos" {
 		hospitalConDoctores.cura(alguienInicialmenteEnfermo)
 		assert.that(hospitalConDoctores.atendiste(alguienInicialmenteEnfermo))
+	}
+
+	test "si el hospital solo tiene a otro hospital dentro, la persona se cura igual" {
+		const hospitalGrandote = new Hospital(curadores = [ new Hospital(
+				curadores = [unDoctorCualquiera]
+			) ])
+		hospitalGrandote.cura(alguienInicialmenteEnfermo)
+		assert.equals(alguienInicialmenteEnfermo.tenesBuenaSalud())
+	}
+
+	test "Una persona NO médica tiene calidad 0" {
+		const unaPersonaComun = new Persona()
+		assert.equals(unaPersonaComun.calidad(), 0)
+	}
+
+	test "Una persona NO médica al curar a alguien sano, hace que deje de tener buena salud" {
+		const unaPersonaComun = new Persona()
+		const unaPersonaSana = new Persona()
+		unaPersonaSana.curate() // Para garantizar que esté sana
+		unaPersonaComun.cura(unaPersonaSana)
+		assert.notThat(unaPersonaSana.tenesBuenaSalud())
+	}
+
+	test "Si una persona estudia medicina, logra hacer que alguien tenga buena salud" {
+		const unFuturoDoctor = new Persona()
+		unFuturoDoctor.estudiaMedicina()
+		unFuturoDoctor.cura(alguienInicialmenteEnfermo)
+		assert.that(alguienInicialmenteEnfermo.tenesBuenaSalud())
 	}
 
 }

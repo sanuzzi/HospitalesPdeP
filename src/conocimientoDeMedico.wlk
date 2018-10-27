@@ -1,13 +1,6 @@
-class Doctor {
-
-	var calidad = 0
-
-	method calidad() = calidad
-
-	method calidad(nuevaCalidad) {
-		calidad = nuevaCalidad
-	}
-
+class ConocimientoDeMedico {
+	var property calidad = 0
+	
 	method aumentaCalidad(unaCalidad) {
 		self.calidad(self.calidad() + unaCalidad)
 	}
@@ -18,5 +11,4 @@ class Doctor {
 		const saludNueva = unPaciente.salud()
 		self.aumentaCalidad(saludNueva - saludAnterior)
 	}
-
 }
